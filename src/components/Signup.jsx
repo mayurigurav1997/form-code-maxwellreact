@@ -6,7 +6,7 @@ export default function Signup() {
     const acquisitionChannel = fd.getAll("acquisition");
     data.acquisition = acquisitionChannel;
     console.log(data);
-    e.target.reset();
+    // e.target.reset();
   }
   return (
     <form onSubmit={handleSubmit}>
