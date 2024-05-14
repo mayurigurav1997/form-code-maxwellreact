@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Input from "./Input";
+import { hasMinLength, isEmail, isNotEmpty } from "../util/validation";
 
 export default function StateLogin() {
   const [enteredValues, setEnteredValues] = useState({
@@ -10,7 +11,13 @@ export default function StateLogin() {
     email: false,
     password: false,
   });
-  const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
+  const emailIsInvalid =
+    didEdit.email &&
+    !isEmail(enteredValues.email) &&
+    !isNotEmpty(enteredValues.email);
+
+  const passwordIsInvalid =
+    didEdit.password && !hasMinLength(enteredValues.password, 6);
   function handleSubmit(e) {
     e.preventDefault();
     console.log(enteredValues);
@@ -51,6 +58,7 @@ export default function StateLogin() {
           onBlur={() => handleInputBlur("email")}
           onChange={(event) => handleInputChange("email", event.target.value)}
           value={enteredValues.email}
+          error={emailIsInvalid && "Please enter a valid email"}
         />
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
