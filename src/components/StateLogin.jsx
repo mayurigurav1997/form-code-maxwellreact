@@ -1,20 +1,28 @@
 import { useState } from "react";
 import Input from "./Input";
 import { hasMinLength, isEmail, isNotEmpty } from "../util/validation";
+import { useInput } from "../hooks/useInput";
 
 export default function StateLogin() {
-  const [enteredValues, setEnteredValues] = useState({
-    email: "",
-    password: "",
+  //   const [enteredValues, setEnteredValues] = useState({
+  //     email: "",
+  //     password: "",
+  //   });
+  //   const [didEdit, setDidEdit] = useState({
+  //     email: false,
+  //     password: false,
+  //   });
+  const {
+    value: emailValue,
+    handleInputChange: handleEmailChange,
+    handleInputBlur: handleEmailBlur,
+  } = useInput("", (value) => {
+    return isEmail(value) && isNotEmpty(value);
   });
-  const [didEdit, setDidEdit] = useState({
-    email: false,
-    password: false,
-  });
-  const emailIsInvalid =
-    didEdit.email &&
-    !isEmail(enteredValues.email) &&
-    !isNotEmpty(enteredValues.email);
+  //   const emailIsInvalid =
+  //     didEdit.email &&
+  //     !isEmail(enteredValues.email) &&
+  //     !isNotEmpty(enteredValues.email);
 
   const passwordIsInvalid =
     didEdit.password && !hasMinLength(enteredValues.password, 6);
@@ -27,23 +35,23 @@ export default function StateLogin() {
     });
   }
 
-  function handleInputChange(identifier, value) {
-    setEnteredValues((prevValues) => ({
-      ...prevValues,
-      [identifier]: value,
-    }));
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: false,
-    }));
-  }
+  //   function handleInputChange(identifier, value) {
+  //     setEnteredValues((prevValues) => ({
+  //       ...prevValues,
+  //       [identifier]: value,
+  //     }));
+  //     setDidEdit((prevEdit) => ({
+  //       ...prevEdit,
+  //       [identifier]: false,
+  //     }));
+  //   }
 
-  function handleInputBlur(identifier) {
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: true,
-    }));
-  }
+  //   function handleInputBlur(identifier) {
+  //     setDidEdit((prevEdit) => ({
+  //       ...prevEdit,
+  //       [identifier]: true,
+  //     }));
+  //   }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -55,9 +63,9 @@ export default function StateLogin() {
           id="email"
           type="email"
           name="email"
-          onBlur={() => handleInputBlur("email")}
-          onChange={(event) => handleInputChange("email", event.target.value)}
-          value={enteredValues.email}
+          onBlur={handleEmailBlur}
+          onChange={handleEmailChange}
+          value={emailValue}
           error={emailIsInvalid && "Please enter a valid email"}
         />
         <div className="control no-margin">
