@@ -16,6 +16,7 @@ export default function StateLogin() {
     value: emailValue,
     handleInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
+    hasError: emailHasError,
   } = useInput("", (value) => {
     return isEmail(value) && isNotEmpty(value);
   });
@@ -66,7 +67,7 @@ export default function StateLogin() {
           onBlur={handleEmailBlur}
           onChange={handleEmailChange}
           value={emailValue}
-          error={emailIsInvalid && "Please enter a valid email"}
+          error={emailHasError && "Please enter a valid email"}
         />
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
